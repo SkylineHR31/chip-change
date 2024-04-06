@@ -8,10 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        padding: "1rem",
+      },
+      colors: {
+        "gray-bg": "#F6F7FF",
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "hero-section":
+          "linear-gradient(0deg, rgba(44, 54, 242, 0.50) 0%, rgba(44, 54, 242, 0.50) 100%), url('/hero-bg.png')",
       },
     },
   },
