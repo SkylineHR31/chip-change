@@ -18,6 +18,10 @@ const config: Config = {
       backgroundImage: {
         "hero-section":
           "linear-gradient(0deg, rgba(44, 54, 242, 0.50) 0%, rgba(44, 54, 242, 0.50) 100%), url('/hero-bg.png')",
+        chevron: "url('/icons/chevron.svg')",
+      },
+      backgroundPosition: {
+        "80": "90% center",
       },
     },
   },

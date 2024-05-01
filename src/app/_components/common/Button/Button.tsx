@@ -1,5 +1,6 @@
 import Link from "next/link";
 import getButtonClasses from "@/app/_utils/getButtonClasses";
+import { MouseEventHandler } from "react";
 
 interface ButtonProps {
   type: "primary" | "secondary";
@@ -7,7 +8,7 @@ interface ButtonProps {
   title: string;
   element: "anchor" | "button";
   path?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({

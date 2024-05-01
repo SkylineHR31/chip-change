@@ -19,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk">
-      <body className={roboto.className}>
+      <body
+        suppressHydrationWarning
+        data-lpignore={"true"}
+        className={roboto.className}
+      >
         <main className="min-h-screen">
           <Header />
           {children}

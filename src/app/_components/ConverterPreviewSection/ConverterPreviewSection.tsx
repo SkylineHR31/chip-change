@@ -4,7 +4,7 @@ import Button from "@/app/_components/common/Button/Button";
 
 export default function ConverterPreviewSection() {
   return (
-    <section className={"py-32"}>
+    <section className="py-32">
       <ContentContainer>
         <div className="grid grid-cols-2 items-center">
           <div className="flex flex-col gap-5 max-w-[400px]">
@@ -14,17 +14,17 @@ export default function ConverterPreviewSection() {
               квартали становить 50 і більше відсотків.
             </p>
             <Button
-              type={"secondary"}
-              size={"large"}
-              title={"Конвертувати валюту"}
-              element={"anchor"}
-              path={"/converter"}
+              type="secondary"
+              size="large"
+              title="Конвертувати валюту"
+              element="anchor"
+              path="/converter"
             />
           </div>
           <div className="flex justify-end">
             <Image
-              src={"/black-card.png"}
-              alt={"Кредитна картка"}
+              src="/black-card.png"
+              alt="Кредитна картка"
               width={436}
               height={314}
             />
