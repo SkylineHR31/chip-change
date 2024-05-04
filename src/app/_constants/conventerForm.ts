@@ -10,3 +10,5 @@ export interface FormData {
   buyCurrencyCodeL: string;
   date: string;
 }
+
+export type FormDataKeys = keyof FormData;

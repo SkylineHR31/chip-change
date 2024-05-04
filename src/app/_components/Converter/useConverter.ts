@@ -1,9 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { MouseEventHandler, useEffect, useMemo, useState } from "react";
 import { ExchangeResponse } from "@/app/_components/Converter/types";
 import { api } from "@/app/_utils/api";
 import { AxiosResponse } from "axios";
-import { FormData, SelectItems } from "@/app/_constants/conventerForm";
+import {
+  FormData,
+  FormDataKeys,
+  SelectItems,
+} from "@/app/_constants/conventerForm";
 import { useForm } from "react-hook-form";
+import convertDateToYYYYMMDD from "@/app/_utils/convertDateToYYYYMMDD";
 
 export default function useConverter() {
   const [currencyData, setCurrencyData] = useState<ExchangeResponse[]>();
@@ -36,21 +41,41 @@ export default function useConverter() {
     [currencyData],
   );
 
-  const initialDate: string = currencyData ? currencyData[0].StartDate : "";
+  const initialDate: string = currencyData
+    ? convertDateToYYYYMMDD(currencyData[0].StartDate)
+    : "";
+  const initialCodeL: string = currencyData
+    ? currencyData[0].CurrencyCodeL
+    : "";
 
-  const methods = useForm<FormData>({
-    values: {
-      sellCurrency: "",
-      sellCurrencyCodeL: "",
-      buyCurrency: "",
-      buyCurrencyCodeL: "",
-      date: initialDate,
-    },
+  console.log(initialDate);
+
+  const formValues: FormData = {
+    sellCurrency: "",
+    sellCurrencyCodeL: initialCodeL,
+    buyCurrency: "",
+    buyCurrencyCodeL: initialCodeL,
+    date: initialDate,
+  };
+
+  const { watch, control, handleSubmit } = useForm<FormData>({
+    values: formValues,
+    defaultValues: formValues,
   });
+
+  const sellNames: FormDataKeys[] = ["sellCurrency", "sellCurrencyCodeL"];
+  const buyNames: FormDataKeys[] = ["buyCurrency", "buyCurrencyCodeL"];
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
 
   return {
     currencyData,
     currencyNamesList,
-    methods,
+    control,
+    onSubmit: handleSubmit(onSubmit),
+    sellNames,
+    buyNames,
   };
 }
