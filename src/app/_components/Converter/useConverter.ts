@@ -9,6 +9,7 @@ import {
 } from "@/app/_constants/conventerForm";
 import { useForm } from "react-hook-form";
 import convertDateToYYYYMMDD from "@/app/_utils/convertDateToYYYYMMDD";
+import calculateCurrency from "@/app/_utils/calculateCurrency";
 
 export default function useConverter() {
   const [currencyData, setCurrencyData] = useState<ExchangeResponse[]>();
@@ -47,8 +48,9 @@ export default function useConverter() {
   const initialCodeL: string = currencyData
     ? currencyData[0].CurrencyCodeL
     : "";
-
-  console.log(initialDate);
+  const initialAmount: string = currencyData
+    ? String(currencyData[0].Amount)
+    : "";
 
   const formValues: FormData = {
     sellCurrency: "",
@@ -56,15 +58,71 @@ export default function useConverter() {
     buyCurrency: "",
     buyCurrencyCodeL: initialCodeL,
     date: initialDate,
+    sellAmount: initialAmount,
+    buyAmount: initialAmount,
   };
 
-  const { watch, control, handleSubmit } = useForm<FormData>({
+  const { watch, control, handleSubmit, setValue } = useForm<FormData>({
     values: formValues,
     defaultValues: formValues,
   });
 
   const sellNames: FormDataKeys[] = ["sellCurrency", "sellCurrencyCodeL"];
   const buyNames: FormDataKeys[] = ["buyCurrency", "buyCurrencyCodeL"];
+
+  const watchBuyCodeL = watch("buyCurrencyCodeL");
+  const watchSellCodeL = watch("sellCurrencyCodeL");
+  const watchSellCurrency = watch("sellCurrency");
+  const watchBuyCurrency = watch("buyCurrency");
+
+  function calculateValue(type: "buy" | "sell") {
+    const watchBuyAmount = watch("buyAmount");
+    const watchSellAmount = watch("sellAmount");
+
+    setValue(
+      type === "buy" ? "buyAmount" : "sellAmount",
+      String(
+        currencyData?.find((item) => item.CurrencyCodeL === watchBuyCodeL)
+          ?.Amount,
+      ) ?? "",
+    );
+    setValue(
+      type === "buy" ? "sellCurrency" : "buyCurrency",
+      type === "buy"
+        ? calculateCurrency({
+            valueFrom: watchBuyCurrency,
+            currentUAHCostFrom: watchBuyAmount,
+            currentUAHCostTo: watchSellAmount,
+          })
+        : calculateCurrency({
+            valueFrom: watchSellCurrency,
+            currentUAHCostFrom: watchSellAmount,
+            currentUAHCostTo: watchBuyAmount,
+          }),
+    );
+  }
+
+  useEffect(() => {
+    calculateValue("buy");
+  }, [
+    watchBuyCodeL,
+    currencyData,
+    setValue,
+    watchBuyCurrency,
+    watch,
+  ]);
+
+  useEffect(() => {
+    calculateValue("sell");
+  }, [
+    watchSellCodeL,
+    currencyData,
+    setValue,
+    watch,
+    watchSellCurrency,
+  ]);
+
+  console.log(watchBuyCodeL, watchSellCodeL);
 
   const onSubmit = (data: FormData) => {
     console.log(data);

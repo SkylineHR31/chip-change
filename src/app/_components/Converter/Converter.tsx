@@ -17,12 +17,12 @@ export default function Converter(): ReactNode {
     buyNames,
   } = useConverter();
 
-  console.log(currencyData);
+  // console.log(currencyData);
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    console.log("click");
-  };
+  // const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  //   e.preventDefault();
+  //   console.log("click");
+  // };
 
   return (
     <form onSubmit={onSubmit} className="text-slate-500 grid grid-cols-12">

@@ -8,6 +8,8 @@ export interface FormData {
   sellCurrencyCodeL: string;
   buyCurrency: string;
   buyCurrencyCodeL: string;
+  sellAmount: string;
+  buyAmount: string;
   date: string;
 }
 
